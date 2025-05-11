@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Appointment Booking Application</title>
+  <style>
+    body {
+      text-align: center;
+      font-family: Verdana, Geneva, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+    }
+    h1 {
+      font-size: 28px;
+    }
+    button {
+      font-size: 20px;
+      padding: 10px 20px;
+      margin-top: 20px;
+      background-color: red;
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #9ab7d6;
+      color: black;
+      font-weight: bolder;
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      background-color: rgb(238, 217, 217);
+    }
+    nav h1 {
+      color: #007bff;
+      margin-left: 50px;
+    }
+    #buttons {
+      margin-right: 30px;
+    }
+    #login {
+      margin-right: 20px;
+    }
+    #maincard {
+      margin-bottom: 50px;
+    }
+    #services img {
+      width: 50%;
+      height: 400px;
+    }
+    #services h1 {
+      background-color: #8ab7e7;
+      font-size: 35px;
+      font-family: Verdana, Geneva, sans-serif;
+    }
+    #index h1 {
+      cursor: pointer;
+    }
+    #index h1,
+    #maincard h1 {
+      font-family: Verdana, Geneva, sans-serif;
+    }
+    #offer {
+      font-size: 80px;
+    }
+    footer {
+      background-color: rgb(238, 217, 217);
+      margin-top: 100px;
+      padding: 40px;
+    }
+    a {
+      text-decoration: none;
+      font-size: 20px;
+    }
+    .language-switcher {
+      display: inline-flex;
+      gap: 10px;
+      margin-left: 10px;
+    }
+    .language-switcher img {
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+    .language-switcher img:hover {
+      border-color: blue;
+    }
+  </style>
+  <script src="https://unpkg.com/i18next@23.11.5/dist/umd/i18next.min.js"></script>
+  <script>
+    i18next.init({
+      lng: 'en',
+      fallbackLng: 'en',
+      resources: {
+        en: {
+          translation: {
+            app_title: 'GoDoc',
+            login: 'Login',
+            signup: 'Signup',
+            welcome: 'Welcome to Doctor Booking App',
+            offer: 'What we offer',
+            doctors: 'Best Doctors in India',
+            booking: 'Signup and Book Visits',
+            videocall: 'Video Call with Doctors',
+            follow: 'Follow us'
+          }
+        },
+        te: {
+          translation: {
+            app_title: 'గోడాక్',
+            login: 'లాగిన్',
+            signup: 'సైన్‌అప్',
+            welcome: 'డాక్టర్ బుకింగ్ యాప్‌కి స్వాగతం',
+            offer: 'మేము ఏమి ఇస్తాము',
+            doctors: 'భారతదేశంలో ఉత్తమ డాక్టర్లు',
+            booking: 'సైన్‌అప్ చేసి సందర్శనలు బుక్ చేయండి',
+            videocall: 'డాక్టర్‌తో వీడియో కాల్',
+            follow: 'మమ్మల్ని అనుసరించండి'
+          }
+        }
+      }
+    }, function(err, t) {
+      updateContent();
+    });
+
+    function updateContent() {
+      document.querySelector('#index h1').innerText = i18next.t('app_title');
+      document.querySelector('#login').innerText = i18next.t('login');
+      document.querySelector('#signup').innerText = i18next.t('signup');
+      document.querySelector('#maincard h1').innerText = i18next.t('welcome');
+      document.querySelector('#offer').innerText = i18next.t('offer');
+      document.querySelectorAll('#services h1')[0].innerText = i18next.t('doctors');
+      document.querySelectorAll('#services h1')[1].innerText = i18next.t('booking');
+      document.querySelectorAll('#services h1')[2].innerText = i18next.t('videocall');
+      document.querySelector('footer a').innerText = i18next.t('follow');
+    }
+
+    function changeLanguage(lang) {
+      i18next.changeLanguage(lang, () => {
+        updateContent();
+        speak(i18next.t('welcome'), lang);
+      });
+      fetch(`/change-language/${lang}`);
+    }
+
+    function speak(text, lang) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = lang === 'te' ? 'te-IN' : 'en-US';
+      window.speechSynthesis.speak(utterance);
+    }
+
+    window.onload = () => {
+      speak(i18next.t('welcome'), i18next.language);
+    };
+  </script>
+</head>
+<body>
+  <nav>
+    <div id="index">
+      <h1>WeCare</h1>
+    </div>
+    <div id="buttons">
+      <button id="login" onmouseover="speak(i18next.t('login'), i18next.language)">LOGIN</button>
+      <button id="signup" onmouseover="speak(i18next.t('signup'), i18next.language)">SIGNUP</button>
+      <div class="language-switcher">
+        <img src="./images/english.png" alt="English" onclick="changeLanguage('en')" onmouseover="speak('English', 'en')">
+        <img src="./images/telugu.png" alt="Telugu" onclick="changeLanguage('te')" onmouseover="speak('Telugu', 'te')">
+      </div>
+    </div>
+  </nav>
+
+  <div id="maincard">
+    <div>
+      <h1>Welcome to Doctor Appointment Booking Application</h1>
+    </div>
+    <div>
+      <img src="https://www.pococare.com/Images/banner_image.png" alt="wecare_image">
+    </div>
+  </div>
+
+  <h1 id="offer">What we offer</h1>
+
+  <div id="services">
+    <div>
+      <div>
+        <h1 onmouseover="speak(i18next.t('doctors'), i18next.language)">Best Doctors Available All Over India</h1>
+      </div>
+      <div>
+        <img src="https://img.freepik.com/free-photo/doctor-nurses-special-equipment_23-2148980721.jpg?w=740&t=st=1687871336~exp=1687871936~hmac=cafebc5917234993975d2efff33e262d206fea3c6d412d1c81b4558437349277" alt="">
+      </div>
+    </div>
+    <br>
+    <div>
+      <div>
+        <h1 onmouseover="speak(i18next.t('booking'), i18next.language)">Just Signup and Start Booking appointments</h1>
+      </div>
+      <div>
+        <img src="https://img.freepik.com/free-photo/young-doctor-supporting-his-patient_1098-2237.jpg?w=740&t=st=1687871522~exp=1687872122~hmac=9b9f7ba79749f10e06f6beef15573378b2580eaba5912f123f461a0317d58ea8" alt="">
+      </div>
+    </div>
+    <br>
+    <div>
+      <div>
+        <h1 onmouseover="speak(i18next.t('videocall'), i18next.language)">Here, Our Doctors offer Video Call Consultations, Cool Isnt it?</h1>
+      </div>
+      <div>
+        <img src="https://img.freepik.com/free-photo/old-disabled-woman-lying-hospital-bed-having-online-video-call-with-doctor-nurse-is-her_482257-20630.jpg?w=826&t=st=1687871700~exp=1687872300~hmac=0eda02317e5edf30b301b74a3acf912b496e8e67032765f2bc11d63e44e3fd39" alt="">
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <a href="https://github.com/Nlakshmiprasanna23" onmouseover="speak(i18next.t('follow'), i18next.language)">Follow us</a>
+    <br>
+  </footer>
+
+  <script>
+    const url = "https://pococare-assignment.vercel.app/";
+    const signup = document.getElementById("signup");
+
+    signup.addEventListener("click", () => {
+      window.location.href = `./view/signup.html`;
+    });
+
+    const login = document.getElementById("login");
+
+    login.addEventListener("click", () => {
+      window.location.href = "./view/signin.html";
+    });
+  </script>
+</body>
+</html>
